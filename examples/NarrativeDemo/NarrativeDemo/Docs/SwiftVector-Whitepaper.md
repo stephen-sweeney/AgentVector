@@ -1,7 +1,21 @@
-# SwiftVector: Deterministic Control for Stochastic Agent Systems
+---
+layout: ../../../layouts/PaperLayout.astro
+title: "SwiftVector: The Reference Kernel"
+description: "Why the AgentVector governance framework's reference implementation is built in Swift. Technical specification for deterministic AI control."
+keywords: SwiftVector, AgentVector, Swift AI governance, deterministic agents, reference kernel, Apple Silicon, AI control loops, conformance testing
+datePublished: 2026-03
+---
 
-**Version:** 1.0  
-**Date:** December 2025  
+# SwiftVector: The Reference Kernel
+
+*Why the AgentVector governance framework's reference implementation is built in Swift.*
+
+---
+
+# SwiftVector: Deterministic Governance for Stochastic Agent Systems
+
+**Version:** 2.0  
+**Date:** March 2026  
 **Author:** Stephen Sweeney  
 **Status:** Published
 
@@ -9,37 +23,35 @@
 
 ## Abstract
 
-Modern AI systems are built on stochastic foundations. Large Language Models reason probabilistically, generate non-deterministic outputs, and behave differently across runs. SwiftVector is an architectural approach for building high-reliability agent systems by enforcing deterministic control around probabilistic intelligence. It does not attempt to make models deterministic—it makes systems deterministic.
+AgentVector is a constitutional governance framework for autonomous AI agents. It defines composable Laws, domain-specific compositions, and a deterministic control loop that bridges the Stochastic Gap between human intent and probabilistic model output. The framework is language-agnostic. The enforcement is not.
 
-This whitepaper presents the core architectural patterns, implementation considerations, and reference applications that demonstrate SwiftVector in production-grade systems.
+SwiftVector is the Swift Enforcement Kernel — the reference implementation from which all conformance tests are derived. This document presents the Swift-specific architectural patterns, implementation guarantees, and reference applications that make SwiftVector the kernel against which all others are measured.
+
+The argument is simple: the reference kernel must have the strongest compile-time guarantees available, because every other kernel's correctness is verified against it. If the reference is wrong, every conformant kernel inherits the error. Swift's type system, Actor isolation, and value types make SwiftVector the least likely to harbor governance bugs that propagate through the conformance suite.
 
 ---
 
-## 1. Introduction: The Stability Gap
+## 1. Introduction
 
-### 1.1 The Problem Space
+### 1.1 The AgentVector Framework
 
-Most multi-agent systems fail in the same way:
-- Prompts become the source of truth
-- Memory becomes an append-only text log
-- Agents mutate state implicitly
-- Failures cannot be replayed or explained
+Every autonomous agent operates across a **Stochastic Gap** — the distance between human intent and probabilistic completion. The [AgentVector Codex](/codex) addresses this with a constitutional framework: composable Laws that provide deterministic governance around fluid intelligence. The Laws define what is governed. Enforcement Kernels compile those Laws into language-specific guarantees.
 
-This creates what SwiftVector calls the **Stochastic Gap**: the divergence between user intent and model output.
+The core principle is inherited from the Codex:
 
-### 1.2 The Current Approach
+> **Intelligence may be probabilistic. Authority must be deterministic.**
 
-Frameworks like LangChain and LangGraph attempt to manage this gap through increasingly complex prompt engineering. That approach scales poorly. SwiftVector takes a different position:
+AgentVector defines the pattern — the deterministic control loop, the agent-reducer separation, the composable Laws, the audit trail. This document does not re-derive that pattern. It makes the case for *how* Swift implements it, and *why* that implementation must be the reference.
 
-> **State, not prompts, must be the authority.**
+### 1.2 The Kernel Question
 
-### 1.3 Design Philosophy: Control vs Intelligence
+AgentVector currently has two governance-layer Enforcement Kernels: SwiftVector (Swift) and TSVector (TypeScript). A third, RustVector, is reserved for transport-layer determinism. More will follow as the framework is adopted.
 
-SwiftVector is built on a single guiding principle:
+When multiple kernels enforce the same Laws, one must be authoritative. The **reference kernel** is the implementation from which conformance test fixtures are derived. When the specification is ambiguous — when two reasonable interpretations of a Law produce different verdicts — the reference kernel's behavior resolves the ambiguity. Every other kernel is verified *against* it.
 
-> **Constrain authority, not intelligence.**
+This creates a consequential requirement: the reference kernel must be the most trustworthy implementation. Not the most popular. Not the most convenient to integrate. The most *correct*.
 
-Agents remain free to reason, explore, and generate ideas. They are never allowed to redefine truth. Truth lives in state, not in language.
+SwiftVector is that kernel. This document explains why.
 
 ---
 
@@ -47,49 +59,64 @@ Agents remain free to reason, explore, and generate ideas. They are never allowe
 
 ### 2.1 The Deterministic Control Loop
 
-At the heart of SwiftVector is a strict control loop inspired by event sourcing and unidirectional data flow:
+The AgentVector control loop is language-agnostic:
 
 ```
 State → Agent → Action → Reducer → New State
 ```
 
 - **State** is the single source of truth
-- **Agents** reason about the state
-- **Actions** describe proposed changes
+- **Agents** reason about the state and propose changes
+- **Actions** describe proposed changes as typed, serializable values
 - **Reducers** are the only authority allowed to mutate state
 
-This loop is deterministic, replayable, and auditable—even though the agent reasoning inside it is not.
+This loop is deterministic, replayable, and auditable — even though the agent reasoning inside it is not.
+
+SwiftVector implements this loop with the following Swift-specific guarantees: the state is a value type (copy-on-write, no shared mutation), the reducer is a pure function (no side effects, formally verifiable), the agent is an isolated actor (no access to governance state), and the audit trail is a hash-chained append-only log (tamper-evident by construction).
 
 ### 2.2 Agents Are Not Controllers
 
-A common mistake in agent architectures is allowing agents to:
-- Write directly to databases
-- Mutate memory implicitly
-- Trigger side effects during reasoning
+A common mistake in agent architectures is allowing agents to write directly to databases, mutate memory implicitly, or trigger side effects during reasoning. AgentVector forbids this at the pattern level. SwiftVector forbids it at the compiler level.
 
-SwiftVector forbids this.
+**Agents** (Stochastic Boundary):
+```swift
+protocol Agent {
+    func observe(state: State) async
+    func reason() async -> [Action]
+}
+```
 
-#### Agents
-- Reason about the world
-- Receive immutable state snapshots
-- Propose Actions
-- Never mutate shared state
+The agent receives an immutable snapshot. It proposes Actions. It never touches governance state. In SwiftVector, this is enforced by Swift's Actor isolation — the agent literally cannot reference the reducer's state without a compiler error.
 
-#### Reducers
-- Validate Actions
-- Enforce invariants
-- Apply deterministic state transitions
+**Reducers** (Deterministic Boundary):
+```swift
+protocol Reducer {
+    func reduce(state: State, action: Action) -> State
+}
+```
 
-#### Effects
-- Perform side effects (I/O, network, storage)
-- Execute after state transitions
-- Never influence authority
+The reducer is a pure function. Same inputs, same outputs, every time. No network calls, no file I/O, no randomness. In SwiftVector, this purity is enforced by the type system — the reducer's signature accepts value types and returns value types. Side effects are structurally excluded.
 
-This separation prevents hallucination loops and makes failures explainable.
+**Effects** (Isolated Side Effects):
+```swift
+enum EffectResult {
+    case success(EffectData)
+    case failure(Error)
+}
+
+// Effects produce Actions for the reducer
+func performEffect() async -> Action
+```
+
+Effects perform I/O, network calls, and storage operations *after* state transitions, never during. They produce new Actions that re-enter the control loop through the reducer. In SwiftVector, effects are async functions that cannot access the reducer's synchronous state — the concurrency model prevents it.
+
+This three-way separation prevents hallucination loops and makes failures explainable. TSVector achieves the same separation through runtime discipline and conformance testing. SwiftVector achieves it through the compiler.
 
 ---
 
 ## 3. Pattern Catalog
+
+These patterns are defined by the AgentVector Codex and implemented here in Swift. The patterns are language-agnostic; the implementation guarantees are Swift-specific.
 
 ### 3.1 The Orchestrator Pattern
 
@@ -102,20 +129,31 @@ The Orchestrator manages the control loop and coordinates between agents, reduce
 - Trigger effects after successful state transitions
 - Maintain audit log
 
+In SwiftVector, the Orchestrator is an `actor` — Swift's concurrency primitive that serializes access to mutable state. This means the control loop cannot be corrupted by concurrent agent operations, and this guarantee is enforced by the compiler, not by convention.
+
 ### 3.2 The Agent-Reducer Separation
 
-**Agents** (Stochastic Boundary):
-```swift
-protocol Agent {
-    func observe(state: State) async
-    func reason() async -> [Action]
-}
-```
+The separation between stochastic reasoning and deterministic authority is the foundational AgentVector pattern. In SwiftVector, each boundary is a distinct concurrency domain:
 
-**Reducers** (Deterministic Boundary):
 ```swift
-protocol Reducer {
-    func reduce(state: State, action: Action) -> State
+// The agent lives in its own actor — isolated from governance state
+actor NarrativeAgent: Agent {
+    func observe(state: GameState) async {
+        // Receives a value-type copy. Cannot mutate the original.
+    }
+    
+    func reason() async -> [Action] {
+        // Proposes actions. Cannot apply them.
+        return [.generateNarrative(context: observedState)]
+    }
+}
+
+// The reducer is a pure function — no actor needed, no state of its own
+struct GovernanceReducer: Reducer {
+    func reduce(state: GameState, action: Action) -> GameState {
+        // Validates against Laws. Returns new state or rejects.
+        // Pure: same inputs → same outputs, always.
+    }
 }
 ```
 
@@ -124,14 +162,21 @@ protocol Reducer {
 Effects are isolated from state transitions:
 
 ```swift
-enum EffectResult {
-    case success(EffectData)
-    case failure(Error)
+// Effects execute after the reducer approves a state transition
+func performEffect(_ effect: Effect) async -> Action {
+    switch effect {
+    case .saveToDatabase(let state):
+        do {
+            try await database.save(state)
+            return .effectCompleted(.save)
+        } catch {
+            return .effectFailed(.save, error)
+        }
+    }
 }
-
-// Effects produce Actions for the reducer
-func performEffect() async -> Action
 ```
+
+The effect produces a new Action that re-enters the control loop. If the save fails, the reducer handles the failure Action deterministically. No implicit state mutation. No silent failures.
 
 ### 3.4 State Machine Guards
 
@@ -139,36 +184,40 @@ State transitions are guarded by preconditions:
 
 ```swift
 func canTransition(from: State, via: Action) -> Bool {
-    // Validate business rules
+    // Validate against composed Laws
     // Check invariants
     // Ensure legal state transitions
 }
 ```
 
+In SwiftVector, guards are expressed through Swift's type system wherever possible. A `SandboxedPath` type that can only represent paths within the writable boundary makes boundary violations unrepresentable — not rejected at runtime, but impossible to express in code.
+
 ---
 
 ## 4. Implementation Considerations
 
-### 4.1 Actor Isolation (Why Swift Helps)
+### 4.1 Actor Isolation: The Compiler as Constitutional Enforcer
 
 SwiftVector maps each agent to an isolated actor:
 - One agent = one concurrency boundary
 - No shared mutable memory
 - No implicit synchronization
 
-On Apple Silicon, this enables a clean separation between:
-- **Control** (agents, reducers, orchestration)
-- **Inference** (CoreML / GPU / Neural Engine)
+This is not a design choice that developers must remember to follow. It is a compiler guarantee. An agent that attempts to directly access the reducer's state produces a compile-time error, not a runtime bug.
 
-Inference remains asynchronous and non-blocking. The control loop remains responsive and deterministic.
+On Apple Silicon, Actor isolation enables a clean separation between:
+- **Control** (agents, reducers, orchestration) — deterministic, auditable
+- **Inference** (CoreML / GPU / Neural Engine) — asynchronous, non-blocking
+
+Inference remains asynchronous and non-blocking. The control loop remains responsive and deterministic. The compiler enforces the boundary between them.
 
 ### 4.2 Location Transparency
 
-While SwiftVector is optimized for on-device execution, its abstractions are location-transparent—the same model applies whether agents run locally or across processes.
+While SwiftVector is optimized for on-device execution, its abstractions are location-transparent — the same model applies whether agents run locally or across processes. The ClawLaw sidecar architecture demonstrates this: the SwiftVector governance process runs alongside the OpenClaw gateway, communicating over IPC, while maintaining the same deterministic guarantees as an in-process reducer.
 
 ### 4.3 Prompting as an Implementation Detail
 
-Most agent frameworks treat prompts as interfaces. SwiftVector does not.
+Most agent frameworks treat prompts as interfaces. AgentVector does not.
 
 Instead, it applies SOLID principles to agent design:
 - **Dependency Inversion**: Agents depend on abstract capabilities, not concrete tools
@@ -180,9 +229,9 @@ In SwiftVector:
 - Schemas define contracts
 - Prompts are merely how agents reason within those constraints
 
-This dramatically improves testability and reduces hallucination risk.
+This dramatically improves testability and reduces hallucination risk. A SwiftVector agent can be fully tested with mock state and deterministic action sequences — no LLM required.
 
-### 4.4 Deterministic Replay & Observability
+### 4.4 Deterministic Replay and Observability
 
 Because all state transitions occur via serialized Actions:
 - Systems can be replayed exactly
@@ -195,7 +244,7 @@ Observability platforms (e.g., Langfuse) integrate naturally as trace sinks, not
 
 **Why Deterministic Replay Matters for Audits:**
 
-When an incident occurs, regulators require exact reproduction—not approximate reconstruction. Python's hash randomization, garbage collection timing, and interpreter variability make this difficult even with extensive logging.
+When an incident occurs, regulators require exact reproduction — not approximate reconstruction. Python's hash randomization, garbage collection timing, and interpreter variability make this difficult even with extensive logging. TypeScript's runtime type coercion and event loop non-determinism present similar challenges.
 
 Swift provides:
 - **Stable iteration order** for collections
@@ -203,25 +252,25 @@ Swift provides:
 - **No GC pauses** affecting execution timing
 - **Consistent hashing** across runs
 
-SwiftVector systems can replay any action sequence and produce byte-identical state transitions. This isn't just useful for debugging—it's a regulatory requirement for incident investigation in certified systems.
+SwiftVector systems can replay any action sequence and produce byte-identical state transitions. This isn't just useful for debugging — it's a regulatory requirement for incident investigation in certified systems. It's also what makes SwiftVector the trustworthy source from which conformance fixtures are derived: if the reference kernel's behavior isn't deterministic, the conformance suite has no stable ground truth.
 
-### 4.5  Regulatory Compliance & Certification
+### 4.5 Regulatory Compliance and Certification
 
 Safety-critical systems in aviation, medical devices, and autonomous vehicles require certification under standards such as DO-178C (aviation), IEC 62304 (medical devices), and ISO 26262 (automotive). These standards demand properties that SwiftVector provides by design.
 
 **Certification Requirements Met:**
 
-| Requirement            | What Regulators Need                | How SwiftVector Delivers                                |
-| ---------------------- | ----------------------------------- | ------------------------------------------------------- |
-| **Reproducibility**    | Same inputs → identical outputs     | Deterministic reducer, no interpreter variability       |
-| **Traceability**       | Every action attributable to source | Complete audit log with agent ID, timestamp, state diff |
-| **Verifiability**      | Provably correct state transitions  | Pure reducer functions enable formal analysis           |
-| **Memory Safety**      | No undefined behavior               | Swift's compile-time guarantees, ARC                    |
-| **Concurrency Safety** | No race conditions                  | Actor isolation enforced by compiler                    |
+| Requirement | What Regulators Need | How SwiftVector Delivers |
+|---|---|---|
+| **Reproducibility** | Same inputs → identical outputs | Deterministic reducer, no interpreter variability |
+| **Traceability** | Every action attributable to source | Complete audit log with agent ID, timestamp, state diff |
+| **Verifiability** | Provably correct state transitions | Pure reducer functions enable formal analysis |
+| **Memory Safety** | No undefined behavior | Swift's compile-time guarantees, ARC |
+| **Concurrency Safety** | No race conditions | Actor isolation enforced by compiler |
 
 **Why Language Choice Matters:**
 
-Python's dynamic nature creates certification challenges: runtime type checking, interpreter variability across versions, GIL limitations for deterministic concurrency, and hash randomization that breaks replay. These require extensive runtime instrumentation and external tooling—adding complexity that certification authorities scrutinize.
+Python's dynamic nature creates certification challenges: runtime type checking, interpreter variability across versions, GIL limitations for deterministic concurrency, and hash randomization that breaks replay. TypeScript improves on Python's type situation but remains a runtime-checked language with JavaScript's coercion semantics underneath.
 
 Swift provides these guarantees at compile-time:
 
@@ -229,121 +278,165 @@ Swift provides these guarantees at compile-time:
 // Compiler enforces: type safety, actor isolation, memory safety
 // No runtime checks that can fail
 // Same binary, same inputs → identical state transitions
-func reduce(state: State, action: Action) -> State {
-    // Pure function - formally verifiable
+func reduce(state: GovernanceState, action: AgentAction) -> GovernanceState {
+    // Pure function — formally verifiable
 }
 ```
 
-For Flightworks GCS, this enables a credible path to DO-178C Level A compliance—the highest safety level for flight-critical software—with audit trails that can reconstruct any incident exactly as it occurred.
+SwiftVector currently powers two aviation Domain Laws: **FlightLaw** for autonomous drone operations targeting DO-178C compliance, and **DispatchLaw** for manned aviation dispatch where policy-as-code evaluation and evidence-grade audit trails support operational certification under 14 CFR Part 121/135. In both domains, the architecture separates AI reasoning (which regulators cannot certify) from deterministic control (which they can). The agent proposes; the reducer enforces. This separation makes certification tractable.
+
+### 4.6 Why the Reference Kernel Must Be Swift
+
+The AgentVector Conformance Suite is a collection of JSON fixtures that specify governance inputs and expected outputs. Any Enforcement Kernel that passes all fixtures enforces the same Laws. The fixtures are derived from the reference kernel — SwiftVector.
+
+This derivation creates a chain of trust:
+
+```
+SwiftVector test suite
+  → validates governance behavior
+  → extracts input/output pairs as JSON fixtures
+  → fixtures consumed by TSVector, RustVector, future kernels
+  → each kernel verified against the reference
+```
+
+If the reference kernel has a governance bug — if it permits an action that should be rejected, or rejects an action that should be permitted — every conformant kernel inherits that bug. The conformance suite doesn't just verify implementations; it *propagates* the reference kernel's behavior.
+
+This makes the reference kernel the highest-consequence implementation. It must have:
+
+- **The strongest type system** — to catch governance logic errors at compile time, before they become fixtures. Swift's exhaustive switch statements mean every action variant is handled. Its non-optional types mean nil states cannot corrupt governance logic.
+- **The most deterministic runtime** — to ensure that fixture derivation produces stable, reproducible results. Swift's value types, stable collection ordering, and absence of garbage collection provide this.
+- **The strictest concurrency model** — to prevent race conditions in governance state from producing incorrect fixtures. Swift's Actor isolation makes concurrent corruption a compile-time error.
+
+TSVector serves the ecosystem where agents live — Node.js, OpenClaw, cloud pipelines. It provides native integration at the cost of weaker static guarantees. The conformance suite compensates: TSVector doesn't need compile-time proof because it has the next best thing — verified equivalence with a kernel that does.
+
+SwiftVector's contribution to AgentVector is not that it runs Swift. It is that it provides the strongest available guarantee that the governance logic encoded in the conformance suite is *correct*. Every other kernel inherits that correctness through verification. The reference must be right. Swift makes it the most likely to be right.
 
 ---
 
-## 5. Case Studies
+## 5. Reference Applications
 
-### 5.1 Why Narrative Systems Are a Hard Case
+SwiftVector powers the governance layer for three AgentVector Domain Laws, each targeting a different domain with different state inputs but the same deterministic control pattern.
 
-Long-running narrative systems expose nearly every failure mode of agent architectures:
-- State drift over time
-- Implicit memory mutation
-- Hallucinated world facts
-- Non-replayable failures
-- Compounding inconsistencies across turns
+### 5.1 DispatchLaw: Governed Flight Release
 
-Unlike short-lived tasks, narrative systems must preserve coherence across hundreds or thousands of agent decisions. Once a contradiction enters the system, it propagates silently.
+Manned aviation dispatch is a decision-making process with irreversible consequences, regulatory obligations, and distributed authority. A flight dispatcher evaluating weather, fuel, runway performance, and crew currency is making high-stakes decisions under time pressure with incomplete information — governed by the same pattern that constrains a software agent proposing shell commands.
 
-For this reason, narrative generation is a deliberately hostile environment for agent architectures—and an ideal proving ground for deterministic control models.
+**The governance problem:** Current dispatch workflows rely on experience, paper SOPs, and institutional knowledge. Go/no-go decisions are made by humans who may be fatigued, under pressure, or missing a critical NOTAM. There is no deterministic audit trail proving that every required check was evaluated.
 
-### 5.2 Reference Implementation: Chronicle Quest
+**How SwiftVector solves it:** DispatchLaw composes four Laws through the SwiftVector kernel:
 
-Chronicle Quest is a narrative system built to demonstrate SwiftVector in practice.
+- **The Observation Law**: Weather data validation, NOTAM currency, aircraft maintenance status, crew duty-time verification
+- **The Resource Law**: Fuel reserve calculations, duty time limits, maintenance window constraints
+- **The Spatial Law**: Runway performance analysis, weight-and-balance envelope, airspace restrictions
+- **The Authority Law**: Dispatcher → chief pilot → PIC escalation ladder
 
-Instead of treating the story as text history, Chronicle Quest models the world as a strict state machine:
-- Characters
-- Inventory
-- Locations
-- Flags
-- Time
+The reducer evaluates dispatch inputs against composed Laws and produces a typed verdict: release, hold, or escalate. Every decision is logged with a hash-chained audit entry linking the verdict to the exact state that produced it. A post-incident review can reconstruct exactly what the system knew and what it recommended.
 
-The LLM generates narrative, but never owns truth.
+**Why SwiftVector:** Compile-time guarantees matter here because the governance logic sits between a human decision and an irreversible outcome. The reducer must not crash, must not produce inconsistent results, and must not lose audit entries. Swift's type system, value types, and Actor isolation provide these guarantees without runtime instrumentation.
 
-This makes long-running stories coherent, debuggable, and replayable—something traditional agent systems struggle to achieve.
+**DispatchLaw composes the identical four Laws as FlightLaw** — Observation, Resource, Spatial, Authority — with completely different domain state. Where FlightLaw evaluates battery health and geofence compliance, DispatchLaw evaluates fuel reserves and runway performance. This parallel composition is the strongest evidence that the AgentVector Laws are genuinely domain-agnostic.
 
-**Technical Stack:**
-- Swift/SwiftUI for iOS (primary)
-- Server-side Swift for cloud deployment (future)
-- SwiftVector architectural patterns
-- State machine with full audit trail
-- Branching narrative with replay capability
+### 5.2 FlightLaw: Autonomous Flight Safety
 
-**Status:** In active development, Q1 2026 release target
+Autonomous drone operations expose every failure mode of uncontrolled agent systems. A drone operating Beyond Visual Line of Sight cannot be manually recovered. Its decisions must be correct the first time.
 
-### 5.3 Safety-Critical Application: Flightworks GCS
+**The governance problem:** FAA Part 107 operations require demonstrable safety controls. As autonomous operations expand under BVLOS waivers, the FAA increasingly scrutinizes software architecture. The regulatory question is not whether the AI makes good decisions — it is whether the system can *prove* it cannot make unsafe ones.
 
-Ground Control Station for autonomous drone operations.
+**How SwiftVector solves it:** FlightLaw composes four Laws through the SwiftVector kernel:
 
-**Key Requirements:**
-- Real-time telemetry processing
-- Safety-critical decision making
-- FAA compliance and audit trails
-- Fail-safe behavior under all conditions
-
-**Certification Context:**
-
-FAA Part 107 operations require demonstrable safety controls. As autonomous operations expand under BVLOS (Beyond Visual Line of Sight) waivers, the FAA increasingly scrutinizes software architecture. SwiftVector provides:
-
-- **Deterministic control loops** that satisfy DO-178C reproducibility requirements
-- **Complete audit trails** linking every command to the source agent, state, and timestamp
-- **Type-safe boundaries** preventing malformed commands from reaching flight control
-- **Replay capability** enabling exact incident reconstruction for FAA review
+- **The Observation Law**: GPS fix validation (3D lock required), battery health, motor status, IMU calibration, pre-flight checklist enforcement
+- **The Resource Law**: Battery management and thermal limits
+- **The Spatial Law**: Geofencing and flight envelope enforcement
+- **The Authority Law**: Risk-tiered approval for high-consequence maneuvers
 
 The architecture separates AI reasoning (which the FAA cannot certify) from deterministic control (which they can). The agent proposes flight paths; the reducer enforces geofences, altitude limits, and airspace restrictions. This separation makes certification tractable.
 
-**Status:** Early development, targeting Q2 2026
+**The Digital Black Box:** FlightLaw provides a tamper-evident, replayable record of every decision the autonomous system made. Any incident can be reconstructed exactly. The system can demonstrate — not merely claim — that it *could not* have violated safety constraints. This transforms compliance from documentation exercise to architectural proof.
+
+**Why SwiftVector:** DO-178C Level A compliance — the highest safety level for flight-critical software — requires reproducibility, traceability, and formal verifiability. SwiftVector's deterministic reducer, complete audit trail, and compile-time safety guarantees provide a credible path to certification. A Python or TypeScript governance layer would require extensive runtime instrumentation to approach the same assurance level.
+
+### 5.3 ChronicleLaw: Narrative Coherence
+
+Long-running narrative systems expose nearly every failure mode of agent architectures: state drift over time, implicit memory mutation, hallucinated world facts, non-replayable failures, and compounding inconsistencies across turns.
+
+Unlike short-lived tasks, narrative systems must preserve coherence across hundreds or thousands of agent decisions. Once a contradiction enters the system, it propagates silently.
+
+For this reason, narrative generation is a deliberately hostile environment for agent architectures — and an ideal proving ground for deterministic control models.
+
+**How SwiftVector solves it:** ChronicleLaw composes two Laws through the SwiftVector kernel:
+
+- **The Persistence Law**: World fact protection and narrative coherence
+- **The Authority Law**: Human authorship verification
+
+Instead of treating the story as text history, the system models the world as a strict state machine: characters, inventory, locations, flags, time. The LLM generates narrative, but never owns truth.
+
+This makes long-running stories coherent, debuggable, and replayable — something traditional agent systems struggle to achieve.
+
+**Why SwiftVector:** Narrative coherence is a long-horizon correctness problem. A governance bug that permits a single contradictory state mutation may not surface for hundreds of turns, by which point the corruption has propagated through the entire narrative. Swift's compile-time guarantees catch these bugs at the governance layer, before they become narrative drift. The Persistence Law's fact-locking mechanism relies on Swift's value types to ensure that world state copies cannot be mutated outside the reducer.
 
 ---
 
 ## 6. Comparison to Existing Approaches
 
-### 6.1 vs LangChain/Python Frameworks
+### 6.1 AgentVector vs. Existing Patterns
 
-| Aspect | LangChain/LangGraph | SwiftVector |
-|--------|---------------------|-------------|
-| **Primary Use Case** | Research & prototyping | Production & safety-critical |
+The AgentVector architectural pattern differs from existing agent frameworks at the design level. These comparisons are framework-level — they apply regardless of which Enforcement Kernel is used.
+
+| Aspect | Existing Frameworks | AgentVector |
+|---|---|---|
 | **State Management** | Implicit, text-based | Explicit, typed state machines |
 | **Determinism** | Non-deterministic | Deterministic control loop |
-| **Concurrency** | Thread-based (GIL-limited) | Actor-based isolation |
-| **Auditability** | Limited | Complete action log |
+| **Auditability** | Limited or bolt-on | Complete action log by construction |
 | **Replay** | Not supported | Full deterministic replay |
-| **Type Safety** | Runtime (Python) | Compile-time (Swift) |
-| **Memory Safety** | Runtime checks | Compile-time guarantees |
-| **Reproducibility** | Interpreter-dependent | Binary-level deterministic |
-| **Certification Path** | Difficult—extensive runtime instrumentation required | Enabled—compile-time guarantees satisfy auditors |
+| **Governance Model** | Prompt-based constraints | Composable Laws with typed enforcement |
+| **Multi-domain** | Framework per domain | One framework, domain-specific compositions |
 
-### 6.2 vs ReAct Pattern
+### 6.2 SwiftVector vs. Runtime Implementations
 
-ReAct (Reasoning + Acting) allows agents to interleave reasoning and action. SwiftVector enforces strict separation:
+The Enforcement Kernel determines the *strength* of the guarantees. These comparisons are kernel-level — they differentiate SwiftVector from TSVector or a hypothetical PythonVector.
+
+| Aspect | Runtime Kernels (TS, Python) | SwiftVector (Swift) |
+|---|---|---|
+| **Type Safety** | Runtime checking | Compile-time guarantees |
+| **Concurrency** | Event loop / GIL | Actor isolation (compiler-enforced) |
+| **Memory Safety** | Garbage collected | ARC, value types, no GC pauses |
+| **Reproducibility** | Interpreter/runtime-dependent | Binary-level deterministic |
+| **Governance Bugs** | Caught by conformance tests | Caught by compiler |
+| **Certification Path** | Requires extensive runtime instrumentation | Compile-time guarantees satisfy auditors |
+| **Integration** | Native to agent ecosystems | Requires sidecar or IPC for Node.js agents |
+
+The tradeoff is explicit: SwiftVector provides stronger guarantees. TSVector provides native integration. The Conformance Suite bridges the gap — TSVector's governance decisions are verified against SwiftVector's, ensuring that weaker static guarantees do not produce weaker governance.
+
+### 6.3 vs. ReAct Pattern
+
+ReAct (Reasoning + Acting) allows agents to interleave reasoning and action. AgentVector enforces strict separation:
 - ReAct: Agent reasons and acts in same context
-- SwiftVector: Agent proposes, reducer authorizes
+- AgentVector: Agent proposes, reducer authorizes
 
 This separation prevents:
 - Unbounded action sequences
 - State corruption from hallucinations
 - Non-deterministic behavior
 
-### 6.3 When to Use SwiftVector
+### 6.4 When to Use Which Kernel
 
 **Use SwiftVector when:**
-- System requires audit trails
-- Reproducibility is essential
-- Safety is critical
-- Edge deployment is target
-- Long-running state coherence matters
+- System requires compile-time governance guarantees
+- Regulatory certification is required or anticipated
+- Audit trail must be tamper-evident and deterministically replayable
+- Domain involves irreversible physical or operational consequences
+- The application is the reference implementation for a new Domain Law
 
-**Use traditional frameworks when:**
-- Rapid prototyping is priority
-- Cloud-only deployment
-- Experimental research
-- State coherence is not critical
+**Use TSVector when:**
+- Native integration with Node.js agent ecosystems is required
+- The agent platform runs in JavaScript/TypeScript (OpenClaw, cloud pipelines)
+- Deployment requires zero external dependencies (no sidecar, no IPC)
+- Conformance-tested governance is sufficient for the domain's risk profile
+
+**Use both when:**
+- SwiftVector as the governance sidecar provides the reference verdicts
+- TSVector as the in-process shim provides low-latency integration
+- The Conformance Suite verifies they agree
 
 ---
 
@@ -373,6 +466,13 @@ SwiftVector enables a complete testing pyramid:
 - Regulatory requirements
 - Audit trail completeness
 
+**Conformance Tests:**
+- Cross-kernel equivalence verification
+- JSON fixture validation against reference behavior
+- Fixture derivation from SwiftVector test suite
+
+The conformance layer sits above compliance testing. It verifies that other Enforcement Kernels produce identical governance decisions for identical inputs. SwiftVector's test suite is the source from which conformance fixtures are extracted — every SwiftVector test that validates a governance decision can produce a JSON fixture that TSVector and future kernels must also pass.
+
 ### 7.2 Mock Agents for Testing
 
 Because agents implement protocols, they can be fully mocked:
@@ -389,66 +489,76 @@ class MockAgent: Agent {
 }
 ```
 
-This enables testing the entire system without LLM calls.
+This enables testing the entire governance system without LLM calls. The reducer doesn't know or care whether the action came from GPT-4, Claude, a local model, or a test harness. It validates the action against the Laws and returns a verdict. This is a direct consequence of the agent-reducer separation — and one of its most practical benefits.
 
 ---
 
-## 8. Beyond Swift: The Pattern Is Universal, The Guarantees Are Not
+## 8. AgentVector: The Pattern Is Universal. SwiftVector: The Guarantees Are Not.
 
-SwiftVector's architectural principles—deterministic control loops, agent-reducer separation, typed actions—apply to any language. The pattern could be implemented in TypeScript, Rust, Go, or even Python.
+SwiftVector's architectural principles — deterministic control loops, agent-reducer separation, typed actions, hash-chained audit trails — are language-agnostic. They have been formalized as the [AgentVector Codex](/codex), and they are now implemented in multiple Enforcement Kernels.
 
 However, the *guarantees* depend on the implementation language.
 
-**When Language Choice Matters:**
+**The Trust Profile Hierarchy:**
 
-| Context | Language Flexibility | Swift Requirement |
-|---------|---------------------|-------------------|
-| Research & Prototyping | Any language | Not required |
-| Production Cloud Systems | Python acceptable | Not required |
-| **Edge Deployment** | Performance matters | Swift advantageous |
-| **Safety-Critical Systems** | Certification required | Swift's guarantees essential |
-| **Regulated Industries** | Audit & reproducibility mandated | Swift provides compile-time proof |
+| Kernel | Guarantee Type | Governance Bugs Caught | Trust Basis |
+|---|---|---|---|
+| **SwiftVector** | Compile-time | Before the binary ships | Type system, Actor isolation, value types |
+| **RustVector** | Compile-time (transport) | Before the binary ships | Ownership model, `no_std` support |
+| **TSVector** | Conformance-tested | Before deployment (test suite) | Verified equivalence with reference kernel |
 
-For systems where correctness is a preference, use whatever language your team knows. For systems where correctness is a requirement—aviation, medical, autonomous vehicles—Swift's compile-time guarantees are not optional. They are the foundation that makes certification achievable.
+For systems where correctness is a preference, use whatever kernel integrates with your platform. For systems where correctness is a requirement — aviation, medical, autonomous vehicles, regulated industries — Swift's compile-time guarantees are not optional. They are the foundation that makes certification achievable.
 
-SwiftVector's contribution is the architectural pattern. Swift's contribution is making that pattern provably safe.
+AgentVector's contribution is the governance pattern. SwiftVector's contribution is making that pattern provably safe. That is why it is the reference — not because Swift is the best language for every context, but because the kernel from which all conformance fixtures are derived must have the strongest guarantee that those fixtures are *correct*.
 
 ---
 
-## 9. Future Work & Research Directions
+## 9. Future Work and Research Directions
 
 ### 9.1 Formal Verification
 
 Explore formal methods for verifying state machine properties:
-- Safety invariants
-- Liveness properties
-- Temporal logic constraints
+- Safety invariants (the reducer never permits a state the Laws prohibit)
+- Liveness properties (the system always makes progress toward a governance decision)
+- Temporal logic constraints (authority escalation follows the required sequence)
 
-### 9.2 Distributed SwiftVector
+Swift's pure-function reducers are amenable to formal analysis. The long-term goal is machine-verified proofs that specific Law compositions cannot produce unsafe states.
 
-Extend the pattern to distributed systems:
-- Consensus protocols for multi-node agents
-- CRDT-based state management
-- Network partition handling
+### 9.2 Distributed Governance
+
+Extend the pattern to distributed systems where governance decisions span multiple nodes:
+- Consensus protocols for multi-node governance decisions
+- CRDT-based state management for eventually-consistent governance state
+- Network partition handling (fail-closed: if the governance node is unreachable, the agent halts)
 
 ### 9.3 Learning Systems
 
-Investigate how reinforcement learning can work within SwiftVector constraints:
-- Reward signals from reducer validation
-- Policy learning within deterministic control
-- Safe exploration boundaries
+Investigate how reinforcement learning can work within AgentVector constraints:
+- Reward signals from reducer validation (permitted actions score higher than rejected ones)
+- Policy learning within deterministic control (the agent learns to propose actions the reducer will accept)
+- Safe exploration boundaries (the reducer guarantees that exploration cannot violate Laws)
+
+### 9.4 Aviation and Operational Governance
+
+SwiftVector's aviation Domain Laws — FlightLaw and DispatchLaw — represent the framework's deepest regulatory engagement. Future work includes:
+- SBIR funding acquisition for FAA-aligned governance tooling
+- Integration with existing aviation data systems (ACARS, dispatch planning tools, weather services)
+- Formal alignment with DO-178C and 14 CFR operational control requirements
+- Extension to FlightLaw transport layer via RustVector when BVLOS operations demand it
 
 ---
 
 ## 10. Conclusion
 
-Agent systems will only become more capable—and more dangerous—as models improve.
+Agent systems will only become more capable — and more dangerous — as models improve.
 
-The question is not whether models will reason better. They will.
+The question is not whether models will reason better. They will. The question is whether the governance around them will have proof.
 
-The question is whether systems will remain correct.
+Not documentation. Not test coverage. Not best practices. *Proof* — compile-time guarantees that governance logic is type-safe, race-free, deterministic, and auditable. Proof that the reference behavior from which every other kernel's correctness is derived was produced by the most trustworthy implementation available.
 
-SwiftVector answers that by placing deterministic control around stochastic intelligence—and refusing to let language redefine truth.
+SwiftVector provides that proof. The Laws are defined in the Codex. The patterns are implemented in Swift. The guarantees are enforced by the compiler. The conformance suite propagates those guarantees to every kernel in the AgentVector ecosystem.
+
+The pattern is universal. The guarantees are not. That is why the reference kernel is built in Swift.
 
 ---
 
@@ -456,25 +566,47 @@ SwiftVector answers that by placing deterministic control around stochastic inte
 
 ### A. Glossary
 
-**Agent**: A reasoning component that observes state and proposes actions
-**Reducer**: The authoritative component that applies state transitions
-**Action**: A serializable description of a proposed state change
-**Effect**: A side-effect producing operation isolated from state logic
-**Orchestrator**: The coordinator managing the control loop
+**Agent**: A reasoning component that observes state and proposes actions. May be probabilistic.
 
-### B. Reference Implementations
+**AgentVector**: The constitutional governance framework. Defines composable Laws, Enforcement Kernels, Domain Laws, and Governance modules. Language-agnostic.
 
-- **Chronicle Quest**: Narrative generation system (Swift/SwiftUI) 
-- **Flightworks GCS**: Drone ground control (Swift/SwiftUI)
+**Conformance Suite**: JSON fixtures specifying governance inputs and expected outputs. Derived from SwiftVector. Any kernel that passes all fixtures enforces the same Laws.
+
+**Domain Law**: A domain-specific composition of Laws through an Enforcement Kernel. Examples: FlightLaw, DispatchLaw, ChronicleLaw, ClawLaw.
+
+**Enforcement Kernel**: A language-specific implementation of the Codex's constitutional primitives. Examples: SwiftVector (Swift, reference), TSVector (TypeScript, integration), RustVector (Rust, transport).
+
+**Reducer**: The pure function that validates and applies state transitions. The constitutional enforcer.
+
+**Action**: A serializable description of a proposed state change. Typed, logged, replayable.
+
+**Effect**: A side-effect-producing operation isolated from state logic. Executes after state transitions.
+
+**Orchestrator**: The coordinator managing the control loop. In SwiftVector, an `actor`.
+
+**Steward**: The human who defines Laws and maintains ultimate authority over the system.
+
+**Stochastic Gap**: The distance between human intent and probabilistic model output.
+
+### B. Reference Domain Laws
+
+| Domain Law | Enforcement Kernel | Domain | Composed Laws |
+|---|---|---|---|
+| **FlightLaw** | SwiftVector (Swift) | Autonomous drone operations | Observation, Resource, Spatial, Authority |
+| **DispatchLaw** | SwiftVector (Swift) | Manned aviation dispatch | Observation, Resource, Spatial, Authority |
+| **ChronicleLaw** | SwiftVector (Swift) | AI-assisted storytelling | Persistence, Authority |
+| **ClawLaw** | TSVector (TypeScript) | Desktop agent governance | Boundary, Resource, Authority |
 
 ### C. Further Reading
 
-- [Swift at the Edge](../manifestos/Swift-at-the-Edge.md) - Why Swift for edge AI
-- [The Agency Paradox](../manifestos/Agency-Paradox.md) - Human command over AI systems
-- [Agent In Command](https://agentincommand.ai) - Project website
+- [The AgentVector Codex](/codex) — The constitutional framework
+- [The Agency Paradox](/papers/agency-paradox) — Human command over AI systems
+- [Law at the Edge](/papers/law-at-the-edge) — The multi-kernel architectural thesis
+- [Bringing Law to the Frontier](/papers/bringing-law) — ClawLaw and desktop agent governance
+- [Agent In Command](https://agentincommand.ai) — Project website
 
 ---
 
-**License:** MIT  
-**Repository:** https://github.com/stephen-sweeney/swiftvector  
+**License:** CC BY 4.0  
+**Repository:** [github.com/agentvector/swiftvector](https://github.com/agentvector/swiftvector)  
 **Contact:** stephen@agentincommand.ai
