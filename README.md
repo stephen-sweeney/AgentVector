@@ -1,10 +1,10 @@
-# SwiftVector
+# AgentVector
 
-Deterministic control of probabilistic agents — an architecture for building **reproducible, auditable, safety-minded** AI systems.
+**Law at the Edge.** Deterministic governance for autonomous agents — a constitutional framework for building **reproducible, auditable, safety-minded** AI systems.
 
-**Core principle:** *State, not prompts, must be the authority.*
+**Core principle:** *Intelligence may be probabilistic. Authority must be deterministic.*
 
-> SwiftVector is a control loop: agents propose, a deterministic reducer decides, state is the source of truth, audits enable replay.
+> AgentVector is a governance framework: composable Laws define what agents can do, Enforcement Kernels compile those Laws into language-specific guarantees, and a shared Conformance Suite proves they agree. One Codex. Multiple kernels. Deterministic safety wherever agents run.
 
 ---
 
@@ -13,16 +13,16 @@ Deterministic control of probabilistic agents — an architecture for building *
 **5 minutes to understand the pattern:**
 
 1. **Read the core loop** (below) — this is the entire idea
-2. **Skim the Whitepaper** — formal specification and rationale  
-   → [`whitepaper/SwiftVector-Whitepaper.md`](./whitepaper/SwiftVector-Whitepaper.md)
-3. **Run the demo** — see the pattern in action  
-   → [`examples/NarrativeDemo`](./examples/NarrativeDemo) *(Xcode project)*
+2. **Read the Codex** — the constitutional framework: Laws, architecture, philosophy  
+   → [`The AgentVector Codex`](./codex/agentvector-codex-v2_0.md)
+3. **Read the kernel spec** — why the reference implementation is Swift  
+   → [`SwiftVector: The Reference Kernel`](./whitepaper/SwiftVector-Whitepaper.md)
 
-The point isn't clever prompts. The point is **governance + reproducibility**: you can explain what happened, reproduce it, and prove what was allowed or denied.
+The point isn't clever prompts. The point is **governance + reproducibility**: you can explain what happened, reproduce it, and prove what was allowed or denied — regardless of which language the governance kernel runs in.
 
 ---
 
-## The Problem SwiftVector Solves
+## The Problem AgentVector Solves
 
 Most multi-agent systems fail the same way:
 
@@ -31,9 +31,9 @@ Most multi-agent systems fail the same way:
 - Agents mutate state implicitly
 - Failures cannot be replayed or explained
 
-This creates what SwiftVector calls the **Stochastic Gap** — the divergence between user intent and model output. Frameworks like LangChain attempt to manage this gap through increasingly complex prompt engineering. That approach scales poorly.
+This creates what AgentVector calls the **Stochastic Gap** — the divergence between user intent and model output. Frameworks like LangChain attempt to manage this gap through increasingly complex prompt engineering. That approach scales poorly.
 
-SwiftVector takes a different position: **constrain authority, not intelligence.**
+AgentVector takes a different position: **constrain authority, not intelligence.**
 
 Agents remain free to reason, explore, and generate ideas. They are never allowed to redefine truth. Truth lives in state, not in language.
 
@@ -72,22 +72,52 @@ State → Agent → Action → Reducer → New State
 
 The reducer is the gatekeeper. You can change models, prompts, and agent strategies without changing the rules of state.
 
+**The Multi-Kernel Architecture:**
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  AGENTVECTOR CODEX — Laws 0–10 (language-agnostic)       │
+├──────────────────────────────────────────────────────────┤
+│  CONFORMANCE SUITE — JSON fixtures (the contract)        │
+├──────────────┬───────────────┬───────────────────────────┤
+│ SwiftVector  │ TSVector      │ RustVector                │
+│ Swift        │ TypeScript    │ Rust                      │
+│ Reference    │ Integration   │ Transport (deferred)      │
+├──────────────┼───────────────┼───────────────────────────┤
+│ FlightLaw    │ ClawLaw       │                           │
+│ DispatchLaw  │               │                           │
+│ ChronicleLaw │               │                           │
+└──────────────┴───────────────┴───────────────────────────┘
+```
+
 ---
 
 ## What's in This Repository
 
-### Core Documentation
+### The Codex
 
 | Document | Description |
 |----------|-------------|
-| [**SwiftVector Whitepaper**](./whitepaper/SwiftVector-Whitepaper.md) | Formal specification, design rationale, and implementation guidance |
+| [**The AgentVector Codex**](./codex/agentvector-codex-v2_0.md) | Constitutional framework: composable Laws, multi-kernel architecture, domain-specific governance |
 
-### Manifestos (Vision Documents)
+### Kernel Specification
 
 | Document | Description |
 |----------|-------------|
-| [**Swift at the Edge**](./manifestos/Swift-at-the-Edge.md) | Why Swift is the natural foundation for edge-deployed AI systems |
+| [**SwiftVector: The Reference Kernel**](./whitepaper/SwiftVector-Whitepaper.md) | Why the reference implementation is Swift — type safety, Actor isolation, conformance fixture derivation |
+
+### Manifestos
+
+| Document | Description |
+|----------|-------------|
 | [**The Agency Paradox**](./manifestos/Agency-Paradox.md) | Human command and governance in AI-driven development |
+
+### Conformance Suite
+
+| Artifact | Description |
+|----------|-------------|
+| [`Schemas/`](./Schemas/) | JSON Schema definitions for the reducer contract: state, action, verdict, config |
+| [`Fixtures/`](./Fixtures/) | Conformance test fixtures — the contract between kernels |
 
 ### Reference Implementation
 
@@ -99,30 +129,49 @@ The reducer is the gatekeeper. You can change models, prompts, and agent strateg
 
 ---
 
-## Related Projects
+## Domain Laws (Jurisdictions)
 
-### Flightworks GCS (Open Source, In Development)
+AgentVector governs through domain-specific compositions of Laws. Each Domain Law selects the Laws relevant to its domain, compiles them through an Enforcement Kernel, and provides the governance modules for its operational context.
 
-Ground Control Station applying SwiftVector to operator-in-the-loop drone workflows: decision support, safety gates, and replayable audits.
+| Domain Law | Kernel | Laws | Domain |
+|------------|--------|------|--------|
+| [**ClawLaw**](https://github.com/stephen-sweeney/ClawLaw) | TSVector (TypeScript) | Boundary, Resource, Authority | Desktop agents with tool access (OpenClaw) |
+| **DispatchLaw** | SwiftVector (Swift) | Observation, Resource, Spatial, Authority | Manned aviation dispatch and flight release |
+| **FlightLaw** | SwiftVector (Swift) | Observation, Resource, Spatial, Authority | Autonomous drone operations |
+| **ChronicleLaw** | SwiftVector (Swift) | Persistence, Authority | AI-assisted storytelling |
 
-- Repository: *(coming Q2 2026)*
+**ClawLaw** is in active development — governing desktop agents like OpenClaw through a TypeScript enforcement kernel that integrates natively with the Node.js ecosystem.
 
-### Chronicle Quest (Commercial, Private)
+**DispatchLaw** applies the identical four Laws as FlightLaw to manned aviation operations — fuel reserves instead of battery health, runway performance instead of geofences, dispatcher/chief pilot/PIC authority ladder instead of operator approval. Same governance pattern, completely different domain state.
 
-A narrative system built on SwiftVector. Public materials focus on architecture patterns and non-proprietary examples, not the proprietary implementation.
+---
+
+## Enforcement Kernels
+
+| Kernel | Language | Role | Trust Basis |
+|--------|----------|------|-------------|
+| **SwiftVector** | Swift | Reference kernel | Compile-time type safety, Actor isolation, value types |
+| **TSVector** | TypeScript | Integration kernel | Conformance-tested against reference; native to Node.js agent ecosystems |
+| **RustVector** | Rust | Transport layer (deferred) | Ownership model, `no_std` for protocol handling |
+
+**SwiftVector** is the reference — conformance fixtures are derived from its test suite. When the specification is ambiguous, SwiftVector's behavior is authoritative.
+
+**TSVector** provides native integration with the ecosystem where most agents live. Weaker static guarantees, compensated by verified equivalence with the reference kernel through the Conformance Suite.
+
+**RustVector** handles transport-layer determinism (MAVLink protocol handling for drone telemetry). Governance decisions remain in SwiftVector or TSVector. Deferred until transport requirements demand it.
 
 ---
 
 ## Design Constraints
 
-SwiftVector is designed to be:
+AgentVector is designed to be:
 
 - **Deterministic at decision points** — reducers and policies are pure functions
 - **Model-agnostic** — works with any LLM, local or cloud
+- **Language-agnostic** — the Laws are universal; enforcement is kernel-specific
 - **Auditable by construction** — every state change is logged and replayable
-- **Edge-ready** — optimized for on-device deployment with Swift
 
-SwiftVector is **not**:
+AgentVector is **not**:
 
 - A promise of "perfect AI"
 - A flight-certified autopilot
@@ -132,44 +181,46 @@ The pattern enables certification. It does not replace it.
 
 ---
 
-## Why Swift?
+## Why Swift as the Reference?
 
-SwiftVector's architectural principles apply to any language. The *guarantees* depend on the implementation.
+AgentVector's architectural principles apply to any language. The *guarantees* depend on the Enforcement Kernel.
 
-| Context | Any Language | Swift Required |
-|---------|--------------|----------------|
+| Context | Any Kernel | SwiftVector Required |
+|---------|------------|----------------------|
 | Research & prototyping | ✓ | |
-| Production cloud systems | ✓ | |
-| **Edge deployment** | | ✓ Performance matters |
+| Desktop agent governance | ✓ (TSVector) | |
 | **Safety-critical systems** | | ✓ Certification required |
 | **Regulated industries** | | ✓ Compile-time proof required |
+| **Conformance fixture derivation** | | ✓ Reference must be most trustworthy |
 
-Swift provides:
+The reference kernel is the one from which all conformance tests are derived. If the reference is wrong, every conformant kernel inherits the error. Swift provides:
 
 - **Compile-time type safety** — no runtime type errors
 - **Actor isolation** — compiler-enforced concurrency safety
 - **Deterministic memory** — no GC pauses, stable iteration order
 - **Reproducible execution** — same binary, same inputs → identical outputs
 
-For systems where correctness is a *preference*, use whatever language your team knows. For systems where correctness is a *requirement*, Swift's compile-time guarantees are the foundation that makes certification achievable.
+For systems where correctness is a *preference*, use whatever kernel integrates with your platform. For systems where correctness is a *requirement*, SwiftVector's compile-time guarantees are the foundation.
 
 ---
 
 ## Roadmap
 
 **Current Focus**
-- Public reference implementation (NarrativeDemo)
-- Documentation and examples
+- ClawLaw v1.0: governed desktop agents via TSVector, end-to-end on Mac Mini
+- Conformance Suite: JSON fixtures + schemas for Laws 0, 4, 8
+- DispatchLaw: governed flight release for manned aviation operations
 
 **Near Term**
-- Stable replay format with schema versioning
-- Additional policy module examples (geofencing, risk scoring)
-- CI pipeline and test coverage
+- `@agentvector/clawlaw-core` npm package (TSVector governance reducer)
+- StackMint pipeline integration via native TypeScript dependency
+- 15+ conformance fixtures passing in both Swift and TypeScript
 
 **Future**
-- Replay viewer / inspector tooling
-- Distributed SwiftVector patterns
-- Community contributions welcome once examples stabilize
+- Formal verification of reducer state machine properties
+- RustVector transport layer for FlightLaw telemetry
+- SBIR funding acquisition for FAA-aligned governance tooling
+- Community contributions welcome once conformance suite stabilizes
 
 ---
 
@@ -177,7 +228,7 @@ For systems where correctness is a *preference*, use whatever language your team
 
 Questions, suggestions, or discussion about applications? Open an issue.
 
-Pull requests welcome for documentation improvements or bug fixes.
+Pull requests welcome for documentation improvements, conformance fixture contributions, or bug fixes.
 
 ---
 
@@ -185,6 +236,7 @@ Pull requests welcome for documentation improvements or bug fixes.
 
 - **Code:** MIT
 - **Documentation:** CC BY 4.0
+- **Conformance Fixtures:** CC BY 4.0
 
 ---
 

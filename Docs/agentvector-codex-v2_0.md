@@ -1,17 +1,17 @@
 ---
 layout: ../../layouts/PaperLayout.astro
-title: SwiftVector Codex
-description: "The constitutional layer: composable Laws, Enforcement Kernels, and domain-specific Governance for governed autonomy."
-keywords: SwiftVector Codex, Swift AI governance, deterministic agents, governed autonomy, constitutional AI, MLX on Apple Silicon
-datePublished: 2026-02
+title: AgentVector Codex
+description: "The constitutional framework: composable Laws, multi-kernel enforcement, and domain-specific governance for governed autonomy."
+keywords: AgentVector Codex, AI governance framework, deterministic agents, governed autonomy, constitutional AI, multi-kernel enforcement, SwiftVector, TSVector
+datePublished: 2026-03
 ---
 
-# The SwiftVector Codex
+# The AgentVector Codex
 
 **A Constitutional Framework for Governed Autonomy**
 
-**Version:** 1.2  
-**Date:** February 2026  
+**Version:** 2.0  
+**Date:** March 2026  
 **Author:** Stephen Sweeney  
 **Status:** Published
 
@@ -21,17 +21,19 @@ datePublished: 2026-02
 
 We do not build prisons out of water.
 
-Every autonomous agent operates across a **Stochastic Gap**—the distance between human intent and probabilistic completion. Large language models reason in probability distributions. They generate plausible outputs, not guaranteed ones. Yet the systems we build around them—the ones that control file access, spend money, move machines—cannot be probabilistic. They must be deterministic, auditable, and lawful.
+Every autonomous agent operates across a **Stochastic Gap**—the distance between human intent and probabilistic completion. Large language models reason in probability distributions. They generate plausible outputs, not guaranteed ones. Yet the systems we build around them—the ones that control file access, spend money, move machines, release flights—cannot be probabilistic. They must be deterministic, auditable, and lawful.
 
-The SwiftVector Codex is our constitutional response: a framework of **Composable Laws** that provide rigid boundaries around fluid intelligence. These Laws do not lobotomize capability. They govern it. An agent operating under the Codex remains free to reason, explore, and propose. It is never free to redefine truth or exceed its authority.
+The AgentVector Codex is our constitutional response: a framework of **Composable Laws** that provide rigid boundaries around fluid intelligence. These Laws do not lobotomize capability. They govern it. An agent operating under the Codex remains free to reason, explore, and propose. It is never free to redefine truth or exceed its authority.
 
-This document establishes the foundational philosophy, the constitutional architecture, and the composable governance modules that comprise the SwiftVector system.
+This governance applies equally to software agents proposing shell commands and human operators releasing flights. The pattern holds because the Laws govern *decision-making processes*, not specific implementations.
+
+This document establishes the foundational philosophy, the constitutional architecture, and the composable governance modules that comprise the AgentVector system.
 
 ---
 
 ## I. The Constitutional Core
 
-At the heart of SwiftVector is a simple premise:
+At the heart of AgentVector is a simple premise:
 
 > **Intelligence may be probabilistic. Authority must be deterministic.**
 
@@ -57,9 +59,9 @@ $$
 
 The Reducer is the constitutional gatekeeper. It validates every proposed change against the system's Laws. Invalid actions are rejected—not crashed, not ignored, but explicitly denied with cause. This creates a complete audit trail where every state transition is attributable and every rejection is explainable.
 
-**3. Actor Isolation**
+**3. Isolation**
 
-Governance state is protected by language-level concurrency guarantees to ensure concurrent agent operations cannot corrupt safety logic. Each agent operates in isolation. The Reducer alone has authority to mutate the source of truth. In SwiftVector, this is enforced by the Swift compiler through Actor isolation. In RustVector, it is enforced through the ownership model. The mechanism varies by Enforcement Kernel; the guarantee does not.
+Governance state is protected by language-level concurrency and safety guarantees to ensure concurrent agent operations cannot corrupt safety logic. Each agent operates in isolation. The Reducer alone has authority to mutate the source of truth. In SwiftVector, this is enforced by the Swift compiler through Actor isolation. In TSVector, it is enforced through immutable state patterns and conformance-tested runtime validation. The mechanism varies by Enforcement Kernel; the guarantee does not.
 
 ### The Control Loop
 
@@ -120,7 +122,7 @@ Governs authority handoff in multi-agent systems. Prevents "Authority Creep" by 
 
 **The Observation Law** *(Telemetry & Readiness)*
 
-Governs deterministic telemetry, logging, and system readiness validation. Provides the audit infrastructure that the Authority Law and the Lifecycle Law depend upon. Every observation is timestamped, attributed, and replayable. In physical systems, the Observation Law also governs pre-operation checks—ensuring hardware readiness before allowing state transitions to operational modes.
+Governs deterministic telemetry, logging, and system readiness validation. Provides the audit infrastructure that the Authority Law and the Lifecycle Law depend upon. Every observation is timestamped, attributed, and replayable. In physical systems, the Observation Law also governs pre-operation checks—ensuring hardware readiness before allowing state transitions to operational modes. In aviation operations, it governs weather data validation, NOTAM currency, and crew qualification verification.
 
 #### Group II: The Sustainability Laws (Resources)
 
@@ -154,7 +156,7 @@ Governs memory integrity by enforcing invariants on world facts. Protects establ
 
 **The Spatial Law** *(Physical Safety)*
 
-Governs geometric boundaries for robotics and spatial computing. Validates movement against a deterministic Safety Envelope. A drone governed by the Spatial Law cannot fly outside its geofence, cannot descend below minimum altitude, cannot approach restricted airspace—not because it chooses not to, but because the Law makes such actions unrepresentable.
+Governs geometric boundaries for robotics, spatial computing, and aviation. Validates movement and operational parameters against a deterministic Safety Envelope. A drone governed by the Spatial Law cannot fly outside its geofence, cannot descend below minimum altitude, cannot approach restricted airspace. An aircraft dispatch governed by the Spatial Law cannot release a flight when weight-and-balance exceeds the runway performance envelope. Not because the system chooses not to, but because the Law makes such actions unrepresentable.
 
 #### Group IV: The Operational Laws (Lifecycle)
 
@@ -176,7 +178,7 @@ Governs model versioning, deployment, and rollback. Prevents activation of new i
 
 **The Protocol Law** *(Developer Experience)*
 
-Governs the standards for building new Laws and new Governance modules. Provides the CLI, templates, and validation tooling that ensures community-built components are compliant with the SwiftVector architecture. A Law that cannot be tested deterministically is not a Law. A Governance module that cannot trace its authority to a composed Law is not governed.
+Governs the standards for building new Laws and new Governance modules. Provides the CLI, templates, and validation tooling that ensures community-built components are compliant with the AgentVector architecture. A Law that cannot be tested deterministically is not a Law. A Governance module that cannot trace its authority to a composed Law is not governed.
 
 ### Complete Law Reference
 
@@ -198,7 +200,7 @@ Governs the standards for building new Laws and new Governance modules. Provides
 
 ## III. The Architecture
 
-The Codex is the constitution. The language is the jurisdiction.
+The Codex is the constitution. The language is an implementation detail.
 
 The Laws are language-agnostic specifications. Enforcement Kernels implement them in specific languages. Domain Laws compose Laws using whichever Kernel fits their platform. This separation creates two critical boundaries: the **Compilation Boundary** between specification and enforcement, and the **Deployment Boundary** between composition and running code.
 
@@ -218,32 +220,39 @@ The Laws are language-agnostic specifications. Enforcement Kernels implement the
 │  ENFORCEMENT KERNELS                                                │
 │  Language-specific implementations. Where the compiler matters.     │
 │  ┌──────────────────────┐  ┌──────────────────────┐                │
-│  │  SwiftVector (Swift)  │  │  RustVector (Rust)   │                │
-│  │  Actor isolation      │  │  Ownership model     │                │
-│  │  Apple Silicon native │  │  Cross-platform      │                │
-│  │  5MB, zero startup    │  │  no_std bare-metal   │                │
+│  │  SwiftVector (Swift)  │  │  TSVector (TypeScript)│                │
+│  │  Reference kernel     │  │  Integration kernel   │                │
+│  │  Actor isolation      │  │  Conformance-tested   │                │
+│  │  Governance layer     │  │  Node.js native       │                │
 │  └──────────────────────┘  └──────────────────────┘                │
-├──────────────┬──────────────┬───────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────────────┐                                          │
+│  │  RustVector (Rust)    │                                          │
+│  │  Transport layer      │                                          │
+│  │  Protocol determinism │                                          │
+│  │  Deferred             │                                          │
+│  └──────────────────────┘                                          │
+├─────────────────────────────────────────────────────────────────────┤
 │  DOMAIN LAWS                                                        │
 │  Domain-specific compositions of Laws through an Enforcement Kernel │
-│  ┌──────────────┬──────────────┬──────────────┐                    │
-│  │  ClawLaw     │  FlightLaw   │  ChronicleLaw│                    │
-│  │  Swift       │  Rust        │  Swift       │                    │
-│  │  Boundary    │  Observation  │  Persistence │                    │
-│  │  Resource    │  Resource    │  Authority   │                    │
-│  │  Authority   │  Spatial     │              │                    │
-│  │              │  Authority   │              │                    │
-│  └──────────────┴──────────────┴──────────────┘                    │
+│  ┌──────────────┬──────────────┬──────────────┬──────────────┐     │
+│  │  ClawLaw      │  FlightLaw   │  DispatchLaw │ ChronicleLaw │     │
+│  │  TypeScript   │  Swift       │  Swift       │  Swift       │     │
+│  │  Boundary     │  Observation │  Observation │  Persistence │     │
+│  │  Resource     │  Resource    │  Resource    │  Authority   │     │
+│  │  Authority    │  Spatial     │  Spatial     │              │     │
+│  │              │  Authority   │  Authority   │              │     │
+│  └──────────────┴──────────────┴──────────────┴──────────────┘     │
 │                                                                     │
 │  GOVERNANCE MODULES                                                 │
 │  Context-specific implementations within a Domain Law               │
-│  ┌──────────────┬──────────────┬──────────────┐                    │
-│  │ Shell        │ Thermal      │ Character    │                    │
-│  │ Browser      │ Fire         │ Combat       │                    │
-│  │ FileSystem   │ Survey       │ Narrative    │                    │
-│  │              │ LawEnforcement│ World       │                    │
-│  │              │ SearchAndRescue│ Module     │                    │
-│  └──────────────┴──────────────┴──────────────┘                    │
+│  ┌──────────────┬──────────────┬──────────────┬──────────────┐     │
+│  │ Shell        │ Thermal      │ Fuel         │ Character    │     │
+│  │ Browser      │ Fire         │ Runway       │ Combat       │     │
+│  │ FileSystem   │ Survey       │ CrewDuty     │ Narrative    │     │
+│  │              │ LawEnforce.  │ Authority    │ World        │     │
+│  │              │ SAR          │              │ Module       │     │
+│  └──────────────┴──────────────┴──────────────┴──────────────┘     │
 ╞═════════════════════════════════════════════════════════════════════╡
 │  ▼ THE DEPLOYMENT BOUNDARY ▼                                        │
 │  Above: composition · Below: running code                           │
@@ -257,23 +266,33 @@ The Laws are language-agnostic specifications. Enforcement Kernels implement the
 
 **The Codex** is the constitutional framework itself—the philosophy, the architecture, the complete system of governance. It defines what Laws are, how they compose, and what principles are non-negotiable. It is the document you are reading.
 
-**The Laws** are universal, abstract governance principles. The Boundary Law through the Protocol Law define the categories of risk and the mechanisms for enforcement. They are domain-agnostic—the Spatial Law says "geometric boundaries must be enforced" without specifying whether those boundaries are geofences for drones or room layouts for robots. They are language-agnostic—the Persistence Law says "world facts must be protected from hallucinatory mutation" without specifying whether that protection comes from Swift's Actor isolation or Rust's ownership model.
+**The Laws** are universal, abstract governance principles. The Boundary Law through the Protocol Law define the categories of risk and the mechanisms for enforcement. They are domain-agnostic—the Spatial Law says "geometric boundaries must be enforced" without specifying whether those boundaries are geofences for drones, runway performance envelopes for manned aircraft, or room layouts for robots. They are language-agnostic—the Persistence Law says "world facts must be protected from hallucinatory mutation" without specifying whether that protection comes from Swift's Actor isolation, TypeScript's immutable state patterns, or Rust's ownership model.
 
 Everything above the Compilation Boundary is pure specification. It can be read, debated, and ratified without a compiler.
 
 ### The Compilation Boundary: Enforcement Kernels
 
-An **Enforcement Kernel** is a language-specific implementation of the Codex's constitutional primitives—the Reducer, the state machine, the audit trail, the type-safe action system. The Kernel is where the compiler matters. It transforms abstract Law specifications into compile-time guarantees.
+An **Enforcement Kernel** is a language-specific implementation of the Codex's constitutional primitives—the Reducer, the state machine, the audit trail, the type-safe action system. The Kernel is where the compiler matters. It transforms abstract Law specifications into enforceable guarantees.
 
-**SwiftVector** is the Swift Enforcement Kernel. It leverages Actor isolation for concurrency safety, the Swift type system for compile-time state validation, and Apple Silicon optimization for on-device inference. SwiftVector produces a 5MB binary with zero startup cost, native CoreML and Neural Engine access, and compiler-enforced governance state protection.
+**SwiftVector** is the Swift Enforcement Kernel and the reference implementation. It leverages Actor isolation for concurrency safety, the Swift type system for compile-time state validation, and value types for deterministic memory layout. SwiftVector is the governance-layer kernel: it powers the Domain Laws where mission-critical and operational decision-making demand the strongest compile-time guarantees. Conformance test fixtures are derived from SwiftVector's behavior—when there is ambiguity in the specification, the reference kernel is authoritative.
 
-**RustVector** is the proposed Rust Enforcement Kernel. It would leverage Rust's ownership model for compile-time memory safety, `no_std` support for bare-metal and RTOS targets, and cross-platform compilation from embedded systems to cloud infrastructure. RustVector is under evaluation for domains requiring DO-178C certification or deployment beyond the Apple ecosystem.
+**TSVector** is the TypeScript Enforcement Kernel. It provides native governance enforcement for Node.js agent ecosystems—including desktop agents (OpenClaw), cloud pipelines, and browser-based agents. TSVector compensates for TypeScript's weaker static guarantees through rigorous conformance testing against the shared fixture suite. Where SwiftVector catches violations at compile time, TSVector catches them at the conformance boundary. The tradeoff is explicit: native integration with the ecosystem where most agents actually run, verified by the same tests that validate the reference kernel.
 
-**Constitutional equivalence**: Both Kernels implement the same Codex. A `GovernanceReducer` in Swift and a `governance_reducer` in Rust are the same pure function—same inputs, same decisions. The language provides the safety guarantees; the Codex provides the constitutional logic.
+**RustVector** provides transport-layer determinism for protocol handling where memory safety and real-time guarantees are non-negotiable. Rust's ownership model, `no_std` support for bare-metal targets, and zero-cost abstractions serve protocol parsing and telemetry relay—the MAVLink Edge Relay for drone communications is the reference use case. Governance decisions remain in SwiftVector or TSVector; RustVector ensures the data reaching those governance layers is deterministic. RustVector is not currently in active development; it activates when transport requirements demand it.
+
+**Constitutional equivalence**: All governance-layer Kernels implement the same Codex. A `GovernanceReducer` in Swift and a `createReducer` in TypeScript are the same pure function—same inputs, same decisions. The language provides the safety guarantees; the Codex provides the constitutional logic. The Conformance Suite proves equivalence.
+
+### The Conformance Suite
+
+Constitutional equivalence is not an assertion—it is a verifiable property. The **Conformance Suite** is a collection of JSON fixtures that specify governance inputs (state, action, configuration) and expected outputs (verdict, reason, audit requirements). Any Enforcement Kernel that passes all fixtures enforces the same Laws.
+
+Fixtures are derived from the reference kernel. When SwiftVector's test suite validates a governance decision, the input/output pair is extracted as a language-agnostic JSON fixture. TSVector's test runner loads the same fixtures and asserts identical verdicts. This is how "multi-kernel" means "the same governance" rather than "three implementations that share vocabulary."
+
+The Conformance Suite is the contract between specification and implementation. It is also the invitation: any language that can pass the fixtures can become an Enforcement Kernel.
 
 ### Below the Compilation Boundary: Composition
 
-**Domain Laws** are domain-specific compositions of Laws, compiled through an Enforcement Kernel. FlightLaw, ChronicleLaw, and ClawLaw are the three reference Domain Laws. Each selects the Laws relevant to its domain, compiles them through a specific Kernel, and provides the shared types, infrastructure, and conflict resolution rules for its Governance modules.
+**Domain Laws** are domain-specific compositions of Laws, compiled through an Enforcement Kernel. FlightLaw, DispatchLaw, ChronicleLaw, and ClawLaw are the four reference Domain Laws. Each selects the Laws relevant to its domain, compiles them through a specific Kernel, and provides the shared types, infrastructure, and conflict resolution rules for its Governance modules.
 
 A Domain Law establishes:
 
@@ -283,13 +302,13 @@ A Domain Law establishes:
 - **Conflict resolution**: When two Governance modules make competing demands, the Domain Law defines precedence
 - **Domain audit format**: How the domain's compliance record is structured
 
-Domain Laws are named by their domain: FlightLaw, ChronicleLaw, ClawLaw. The compound name is a proper noun—it identifies a specific body of law, not a generic concept. New domains create new Domain Laws.
+Domain Laws are named by their domain: FlightLaw, DispatchLaw, ChronicleLaw, ClawLaw. The compound name is a proper noun—it identifies a specific body of law, not a generic concept. New domains create new Domain Laws.
 
 **Governance Modules** are context-specific implementations within a Domain Law. They carry the domain expertise—the research, the thresholds, the concrete types—that makes governance meaningful in a particular operational context.
 
-Governance modules are where theory meets practice. FireGovernance under FlightLaw exists because wildfire drone operations have specific safety requirements that differ from thermal survey operations. CharacterGovernance under ChronicleLaw exists because character state integrity in a narrative system has specific persistence requirements that differ from world state coherence.
+Governance modules are where theory meets practice. FireGovernance under FlightLaw exists because wildfire drone operations have specific safety requirements that differ from thermal survey operations. FuelGovernance under DispatchLaw exists because fuel reserve calculations in manned aviation have specific regulatory requirements that differ from battery management in drone operations. CharacterGovernance under ChronicleLaw exists because character state integrity in a narrative system has specific persistence requirements that differ from world state coherence.
 
-Each Governance module is grounded in domain-specific research. FireGovernance requires fire science. ThermalGovernance requires atmospheric thermodynamics. CharacterGovernance requires RPG character system design. This research produces the concrete numbers, rules, and types that the Governance module enforces.
+Each Governance module is grounded in domain-specific research. FireGovernance requires fire science. FuelGovernance requires 14 CFR Part 91/135 fuel planning regulations. CharacterGovernance requires RPG character system design. This research produces the concrete numbers, rules, and types that the Governance module enforces.
 
 A Governance module specifies:
 
@@ -300,7 +319,7 @@ A Governance module specifies:
 
 ### Below the Deployment Boundary: Running Code
 
-**Reference Implementations** are where the Law compiles and runs. Each is a deployable application built on a Domain Law through an Enforcement Kernel. ClawLaw v0.1.0-alpha provides governed autonomy for desktop agents. ChronicleLaw provides human authorship verification in AI-assisted storytelling. FlightLaw provides deterministic safety for autonomous flight operations.
+**Reference Implementations** are where the Law compiles and runs. Each is a deployable application built on a Domain Law through an Enforcement Kernel. ClawLaw provides governed autonomy for desktop agents. DispatchLaw provides policy-as-code evaluation for manned aviation dispatch. FlightLaw provides deterministic safety for autonomous flight operations. ChronicleLaw provides human authorship verification in AI-assisted storytelling.
 
 Reference implementations are the proof that the architecture works—that Laws specified in prose survive compilation into binaries that actually enforce them.
 
@@ -327,10 +346,20 @@ The Observation Law governs telemetry, readiness, and logging. Its implementatio
 | Domain Law | Observation Law Implementation |
 |------------|-------------------------------|
 | **FlightLaw** | GPS fix validation (3D lock required), battery health, motor status, IMU calibration, pre-flight checklist enforcement |
+| **DispatchLaw** | Weather data validation, NOTAM currency, aircraft maintenance status, crew duty-time verification |
 | **ClawLaw** | System resource monitoring, process isolation verification, network state logging |
 | **ChronicleLaw** | Session state capture, narrative branch logging, authorship attribution |
 
-The Law is the same. The Enforcement Kernel compiles it. The Domain Law configures it. The Governance module implements it with domain expertise. This separation allows the Codex to remain stable while Domain Laws and their Governance modules evolve.
+### Example: The Spatial Law Across Domains
+
+The Spatial Law governs geometric and performance boundaries. FlightLaw and DispatchLaw compose the same Law with entirely different domain state:
+
+| Domain Law | Spatial Law Implementation |
+|------------|---------------------------|
+| **FlightLaw** | Geofence enforcement, altitude limits, restricted airspace avoidance, safety envelope validation |
+| **DispatchLaw** | Runway performance analysis, weight-and-balance envelope, departure/arrival obstacle clearance |
+
+The governance pattern is identical. The state inputs are completely different. Both produce evidence-grade audit trails for their respective regulators. This parallel composition is the strongest evidence that the Laws are genuinely domain-agnostic.
 
 ---
 
@@ -339,7 +368,7 @@ The Law is the same. The Enforcement Kernel compiles it. The Domain Law configur
 ### FlightLaw: Avionics
 
 **Governing Domain:** Safety-critical drone and aviation operations  
-**Enforcement Kernel:** RustVector (Rust)
+**Enforcement Kernel:** SwiftVector (Swift)
 
 **Composed Laws:**
 - The Observation Law: Flight telemetry, hardware readiness, and pre-flight validation
@@ -357,6 +386,27 @@ The Law is the same. The Enforcement Kernel compiles it. The Domain Law configur
 **Purpose:** Enables certification-ready autonomous aviation. FlightLaw enforces hard boundaries that satisfy regulatory requirements. A drone under FlightLaw cannot violate its geofence, cannot ignore low-battery warnings, cannot exceed altitude limits. These are not suggestions—they are constitutional constraints compiled into the binary.
 
 **The Digital Black Box:** FlightLaw provides a tamper-evident, replayable record of every decision the autonomous system made. Any incident can be reconstructed exactly. Every state transition is attributable. The system can demonstrate—not merely claim—that it *could not* have violated safety constraints. This transforms compliance from documentation exercise to architectural proof.
+
+### DispatchLaw: Aviation Operations
+
+**Governing Domain:** Manned aviation dispatch and flight release operations  
+**Enforcement Kernel:** SwiftVector (Swift)
+
+**Composed Laws:**
+- The Observation Law: Weather data validation, NOTAMs, aircraft status, crew currency
+- The Resource Law: Fuel reserves, duty time limits, maintenance window constraints
+- The Spatial Law: Runway performance analysis, weight-and-balance envelope, airspace restrictions
+- The Authority Law: Dispatcher / chief pilot / PIC authority escalation ladder
+
+**Governance Modules:**
+- **FuelGovernance**: Fuel reserve calculations, IFR/VFR alternate requirements, regulatory minimum enforcement.
+- **RunwayGovernance**: Runway performance analysis, contamination adjustments, weight-restricted departure clearance.
+- **CrewDutyGovernance**: Duty time tracking, rest requirement enforcement, currency verification.
+- **AuthorityGovernance**: Structured escalation from dispatcher to chief pilot to PIC, with evidence-grade documentation at each tier.
+
+**Purpose:** DispatchLaw and FlightLaw compose the identical four Laws with entirely different domain rules. Where FlightLaw governs battery health and geofences, DispatchLaw governs fuel reserves and runway performance. Where FlightLaw's authority ladder is operator-approval for autonomous maneuvers, DispatchLaw's is dispatcher → chief pilot → PIC for flight release decisions. This parallel composition demonstrates that the Codex is domain-agnostic: the governance pattern is identical, the state inputs are completely different, and both produce evidence-grade audit trails for their respective regulators.
+
+DispatchLaw also broadens the scope of what "agent" means in AgentVector. The dispatcher is a human operator making high-consequence decisions under time pressure with incomplete information—governed by the same Laws that constrain a software agent proposing shell commands. The governance pattern holds because it governs decision-making processes, not specific implementations.
 
 ### ChronicleLaw: Narrative
 
@@ -379,7 +429,7 @@ The Law is the same. The Enforcement Kernel compiles it. The Domain Law configur
 ### ClawLaw: Desktop
 
 **Governing Domain:** Autonomous agents with shell and browser access  
-**Enforcement Kernel:** SwiftVector (Swift)
+**Enforcement Kernel:** TSVector (TypeScript)
 
 **Composed Laws:**
 - The Boundary Law: Sandboxed filesystem and network access
@@ -391,7 +441,7 @@ The Law is the same. The Enforcement Kernel compiles it. The Domain Law configur
 - **BrowserGovernance**: Web interaction constraints. Domain restrictions, form submission approval, download authorization.
 - **FileSystemGovernance**: File operation governance. Read/write scope, deletion approval, sensitive file detection.
 
-**Purpose:** Makes the "monster playable." Desktop agents with tool access are extraordinarily capable and extraordinarily dangerous. ClawLaw provides the rules for natural weapons—the agent can use the terminal, but only within boundaries it cannot subvert.
+**Purpose:** Makes the "monster playable." Desktop agents with tool access are extraordinarily capable and extraordinarily dangerous. ClawLaw provides the rules for natural weapons—the agent can use the terminal, but only within boundaries it cannot subvert. ClawLaw's TypeScript kernel enables native integration with the Node.js ecosystems where desktop agents operate—OpenClaw, cloud pipelines, and agent platforms—while the Conformance Suite ensures its governance decisions match the reference kernel exactly.
 
 ---
 
@@ -412,6 +462,8 @@ The Steward does:
 - Maintain authority over state transitions the agent cannot access
 - Review audit trails to verify lawful operation
 
+The Steward role is not limited to software engineers overseeing AI agents. A chief pilot configuring DispatchLaw's authority escalation tiers is a Steward. A game designer defining ChronicleLaw's authorship boundaries is a Steward. The role is defined by the authority to write Laws and the responsibility for their consequences.
+
 ### The Paradox Resolved
 
 The Agency Paradox asks: in a world of autonomous AI, who is truly in command?
@@ -428,7 +480,7 @@ The Codex is designed for extension at every level.
 
 **New Laws** may be added to the registry. Each Law is identified by name and assigned a registry number. New Laws must be deterministic, composable, auditable, and pass Protocol Law validation.
 
-**New Enforcement Kernels** may implement the Codex in additional languages. Each Kernel must demonstrate constitutional equivalence—identical inputs producing identical governance decisions regardless of implementation language. The Protocol Law provides the compliance test suite.
+**New Enforcement Kernels** may implement the Codex in additional languages. Each governance-layer Kernel must demonstrate constitutional equivalence—identical inputs producing identical governance decisions regardless of implementation language. The Conformance Suite provides the verification mechanism; the Protocol Law provides the compliance standard.
 
 **New Domain Laws** may be created for new operational domains. A Domain Law selects the Laws relevant to its domain, chooses an Enforcement Kernel, and defines how its Governance modules interact.
 
@@ -442,7 +494,7 @@ The Stochastic Gap will not close. Models will remain probabilistic. Agents will
 
 The question is not whether to constrain intelligence—it is how to govern it without destroying it.
 
-The SwiftVector Codex offers one answer: define the Laws clearly, compile them through Enforcement Kernels that provide real guarantees, compose them into Domain Laws for specific contexts, implement them as Governance modules grounded in real expertise, enforce them deterministically, audit them completely, and reserve final authority for the Steward who bears responsibility.
+The AgentVector Codex offers one answer: define the Laws clearly, compile them through Enforcement Kernels that provide real guarantees, verify equivalence through a shared Conformance Suite, compose them into Domain Laws for specific contexts, implement them as Governance modules grounded in real expertise, enforce them deterministically, audit them completely, and reserve final authority for the Steward who bears responsibility.
 
 Intelligence may be fluid. Authority must be rigid. Between them, the Codex provides the constitutional framework that makes autonomous systems not merely capable, but lawful.
 
@@ -455,28 +507,34 @@ Intelligence may be fluid. Authority must be rigid. Between them, the Codex prov
 | Document | Purpose | Stability |
 |----------|---------|-----------|
 | **The Codex** (this document) | Constitutional philosophy, Laws, architecture | Stable |
-| **SwiftVector Whitepaper** | Technical specification of the SwiftVector Enforcement Kernel | Stable |
+| **SwiftVector Kernel Specification** | Technical specification of the SwiftVector Enforcement Kernel | Stable |
 | **Law Specifications** (per-Law) | Detailed technical specification of each Law | Evolving |
+| **Conformance Suite** | JSON fixtures, schemas, and test runner documentation | Evolving |
 | **Domain Law Guides** (per-domain) | Domain Law composition, Kernel selection, shared types | Evolving |
 | **Governance Module Specs** (per-module) | Context-specific implementation and domain research | Active |
 
 ### B. Related Reading
 
-- [The Agency Paradox](./manifestos/Agency-Paradox.md) — The philosophical foundation
-- [Swift at the Edge](./manifestos/Swift-at-the-Edge.md) — The platform rationale
-- [SwiftVector Whitepaper](./whitepaper/SwiftVector-Whitepaper.md) — The technical specification
+- [The Agency Paradox](/papers/agency-paradox) — The philosophical foundation
+- [Law at the Edge](/papers/law-at-the-edge) — The multi-kernel architectural thesis
+- [SwiftVector Kernel Specification](/papers/swift-kernel) — The reference kernel specification
+- [Bringing Law to the Frontier](/papers/bringing-law) — ClawLaw and the desktop agent governance narrative
 
 ### C. Glossary
 
-**Agent**: A reasoning component that observes state and proposes actions. Agents may be probabilistic.
+**Agent**: A reasoning component that observes state and proposes actions. Agents may be probabilistic. An agent may be a software system or a human operator—the governance pattern applies to decision-making processes regardless of implementation.
 
 **Codex**: The complete constitutional framework comprising the Laws, the architecture, and the governance philosophy. Language-agnostic.
 
-**Domain Law**: A domain-specific composition of Laws compiled through an Enforcement Kernel. Provides shared types, infrastructure, and conflict resolution for a particular operational domain. Examples: FlightLaw, ChronicleLaw, ClawLaw.
+**Conformance Suite**: A collection of JSON fixtures specifying governance inputs and expected outputs. Any Enforcement Kernel that passes all fixtures enforces the same Laws. The mechanism that verifies constitutional equivalence.
 
-**Enforcement Kernel**: A language-specific implementation of the Codex's constitutional primitives—the Reducer, the state machine, the audit trail, the type-safe action system. Sits at the Compilation Boundary. Examples: SwiftVector (Swift), RustVector (Rust).
+**Constitutional Equivalence**: The property that two or more Enforcement Kernels produce identical governance decisions for identical inputs. Verified by the Conformance Suite.
 
-**Governance Module**: A context-specific implementation within a Domain Law, grounded in domain research, carrying the concrete types and thresholds that make governance operational. Examples: FireGovernance, CharacterGovernance, ShellGovernance.
+**Domain Law**: A domain-specific composition of Laws compiled through an Enforcement Kernel. Provides shared types, infrastructure, and conflict resolution for a particular operational domain. Examples: FlightLaw, DispatchLaw, ChronicleLaw, ClawLaw.
+
+**Enforcement Kernel**: A language-specific implementation of the Codex's constitutional primitives—the Reducer, the state machine, the audit trail, the type-safe action system. Sits at the Compilation Boundary. Examples: SwiftVector (Swift), TSVector (TypeScript), RustVector (Rust, transport layer).
+
+**Governance Module**: A context-specific implementation within a Domain Law, grounded in domain research, carrying the concrete types and thresholds that make governance operational. Examples: FireGovernance, FuelGovernance, CharacterGovernance, ShellGovernance.
 
 **Law**: A universal, deterministic governance principle that constrains agent capability within defined boundaries. Language-agnostic and domain-agnostic. Identified by name; numbered for registry reference.
 
@@ -484,7 +542,7 @@ Intelligence may be fluid. Authority must be rigid. Between them, the Codex prov
 
 **State**: The single source of truth. Explicit, typed, immutable, auditable.
 
-**Steward**: The human engineer who defines Laws, selects Enforcement Kernels, composes Domain Laws, configures Governance modules, and maintains ultimate authority over the system.
+**Steward**: The human who defines Laws, selects Enforcement Kernels, composes Domain Laws, configures Governance modules, and maintains ultimate authority over the system. May be a software engineer, a chief pilot, a game designer, or any domain expert who bears responsibility for governance outcomes.
 
 **Stochastic Gap**: The distance between human intent and probabilistic model output. The problem the Codex exists to solve.
 
@@ -495,10 +553,11 @@ Intelligence may be fluid. Authority must be rigid. Between them, the Codex prov
 | 1.0 | February 2026 | Initial publication. Two-level architecture (Laws, Jurisdictions). |
 | 1.1 | February 2026 | Four-level architecture. Replaced "Jurisdiction" with Domain Law and Governance modules. Added reference Governance modules for all three Domain Laws. Updated Protocol Law scope. |
 | 1.2 | February 2026 | Architecture aligned with visual diagram. Added Enforcement Kernels and Compilation Boundary as formal architectural concepts. Added Deployment Boundary. Introduced SwiftVector and RustVector as named Kernels. Removed bracket notation from naming conventions. Removed "gaps in numbering" language; Laws identified by name with registry numbers. Constitutional equivalence across Kernels formalized. Domain Law Kernel selection made explicit. |
+| 2.0 | March 2026 | Framework renamed from SwiftVector to AgentVector. TSVector (TypeScript) introduced as integration kernel. DispatchLaw (manned aviation operations) added as fourth reference Domain Law. ClawLaw kernel reassigned from SwiftVector to TSVector. RustVector reframed as transport-layer kernel. Conformance Suite formalized as constitutional verification mechanism. "Agent" broadened to include human operators in governed decision processes. |
 
 ---
 
 **License:** CC BY 4.0  
-**Repository:** [github.com/stephen-sweeney/SwiftVector](https://github.com/stephen-sweeney/SwiftVector)  
+**Repository:** [github.com/agentvector/codex](https://github.com/agentvector/codex)  
 **Website:** [agentincommand.ai](https://agentincommand.ai)  
 **Contact:** stephen@agentincommand.ai
