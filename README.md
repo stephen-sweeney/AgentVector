@@ -14,7 +14,7 @@
 
 1. **Read the core loop** (below) — this is the entire idea
 2. **Read the Codex** — the constitutional framework: Laws, architecture, philosophy  
-   → [`The AgentVector Codex`](./codex/agentvector-codex-v2_0.md)
+   → [`The AgentVector Codex`](./docs/agentvector-codex-v2_0.md)
 3. **Read the kernel spec** — why the reference implementation is Swift  
    → [`SwiftVector: The Reference Kernel`](./whitepaper/SwiftVector-Whitepaper.md)
 
@@ -76,29 +76,38 @@ The reducer is the gatekeeper. You can change models, prompts, and agent strateg
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  AGENTVECTOR CODEX — Laws 0–10 (language-agnostic)       │
+│  AGENTVECTOR FRAMEWORK (this repo)                       │
+│                                                          │
+│  Codex — Laws 0–10 (language-agnostic specification)     │
+│  Conformance Suite — JSON fixtures (the contract)        │
+│                                                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+│  │ SwiftVector  │  │ TSVector    │  │ RustVector  │     │
+│  │ Swift        │  │ TypeScript  │  │ Rust        │     │
+│  │ Reference    │  │ Integration │  │ Deferred    │     │
+│  └─────────────┘  └─────────────┘  └─────────────┘     │
 ├──────────────────────────────────────────────────────────┤
-│  CONFORMANCE SUITE — JSON fixtures (the contract)        │
-├──────────────┬───────────────┬───────────────────────────┤
-│ SwiftVector  │ TSVector      │ RustVector                │
-│ Swift        │ TypeScript    │ Rust                      │
-│ Reference    │ Integration   │ Transport (deferred)      │
-├──────────────┼───────────────┼───────────────────────────┤
-│ FlightLaw    │ ClawLaw       │                           │
-│ DispatchLaw  │               │                           │
-│ ChronicleLaw │               │                           │
-└──────────────┴───────────────┴───────────────────────────┘
+│  Jurisdictions consume the framework (separate repos):   │
+│                                                          │
+│  ClawLaw ──────── imports @agentvector/core (TSVector)   │
+│  DispatchLaw ──── imports SwiftVectorCore (SwiftVector)  │
+│  FlightLaw ────── imports SwiftVectorCore (SwiftVector)  │
+│  ChronicleLaw ── imports SwiftVectorCore (SwiftVector)   │
+│  YourLaw ──────── imports whichever kernel fits          │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## What's in This Repository
 
+This repository ships the governance framework: constitutional specification, enforcement kernels, and conformance infrastructure. Domain-specific jurisdictions live in their own repos.
+
 ### The Codex
 
 | Document | Description |
 |----------|-------------|
-| [**The AgentVector Codex**](./codex/agentvector-codex-v2_0.md) | Constitutional framework: composable Laws, multi-kernel architecture, domain-specific governance |
+| [**The AgentVector Codex**](./docs/agentvector-codex-v2_0.md) | Constitutional framework: composable Laws, multi-kernel architecture, domain-specific governance |
 
 ### Kernel Specification
 
@@ -112,12 +121,12 @@ The reducer is the gatekeeper. You can change models, prompts, and agent strateg
 |----------|-------------|
 | [**The Agency Paradox**](./manifestos/Agency-Paradox.md) | Human command and governance in AI-driven development |
 
-### Conformance Suite
+### Conformance Suite (planned)
 
 | Artifact | Description |
 |----------|-------------|
-| [`Schemas/`](./Schemas/) | JSON Schema definitions for the reducer contract: state, action, verdict, config |
-| [`Fixtures/`](./Fixtures/) | Conformance test fixtures — the contract between kernels |
+| `Schemas/` | JSON Schema definitions for the reducer contract: state, action, verdict, config |
+| `Fixtures/` | Conformance test fixtures — the contract between kernels |
 
 ### Reference Implementation
 
@@ -130,6 +139,8 @@ The reducer is the gatekeeper. You can change models, prompts, and agent strateg
 ---
 
 ## Domain Laws (Jurisdictions)
+
+Domain Laws are **consumers** of the AgentVector framework, not parts of it. Each lives in its own repository and declares a dependency on an AgentVector kernel package. The framework does not know they exist.
 
 AgentVector governs through domain-specific compositions of Laws. Each Domain Law selects the Laws relevant to its domain, compiles them through an Enforcement Kernel, and provides the governance modules for its operational context.
 
