@@ -1,16 +1,16 @@
 # NarrativeDemo
 
-A minimal iOS application demonstrating the **SwiftVector** pattern for deterministic AI agent control.
+A minimal iOS application demonstrating the **AgentVector** pattern for deterministic AI agent control.
 
 ## What This Is
 
-NarrativeDemo is a simple text-based adventure game where an AI agent proposes story events and a deterministic reducer validates them. It serves as a reference implementation for the SwiftVector architectural pattern described in the accompanying whitepaper.
+NarrativeDemo is a simple text-based adventure game where an AI agent proposes story events and a deterministic reducer validates them. It serves as a reference implementation for the AgentVector architectural pattern described in the SwiftVector Kernel Specification.
 
 **The core insight:** AI can hallucinate, but your system doesn't have to accept it. State, not prompts, is the authority.
 
 ## The Pattern
 
-SwiftVector separates AI systems into components with distinct responsibilities:
+AgentVector separates AI systems into components with distinct responsibilities:
 
 | Component | Role | Determinism | File |
 |-----------|------|-------------|------|
@@ -22,7 +22,7 @@ SwiftVector separates AI systems into components with distinct responsibilities:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    SwiftVector Control Loop                  │
+│                    AgentVector Control Loop                   │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │   State ──────► Agent ──────► Action ──────► Reducer ────┐  │
@@ -43,7 +43,7 @@ Traditional AI agent architectures give the model too much authority. When an LL
 - Debugging is non-deterministic
 - Compliance is impossible
 
-SwiftVector inverts the control:
+AgentVector inverts the control:
 - The LLM proposes; the system disposes
 - Invalid proposals are rejected with full audit trail
 - Same actions always produce same state (deterministic replay)
@@ -129,7 +129,7 @@ On devices without Apple Intelligence, the agent falls back to heuristic-based p
 
 ## Whitepaper Alignment
 
-This demo implements concepts from the SwiftVector whitepaper:
+This demo implements concepts from the SwiftVector Kernel Specification:
 
 | Section | Concept | Implementation |
 |---------|---------|----------------|
@@ -186,14 +186,14 @@ See `LEARNING.md` for notes on Swift 6 actor isolation inference.
 
 ## Further Reading
 
-- [SwiftVector Whitepaper](https://agentincommand.ai/whitepaper) — Full architectural specification
+- [SwiftVector Kernel Specification](https://agentincommand.ai/whitepaper) — Reference kernel architecture
 - [Agent in Command](https://agentincommand.ai) — Deterministic AI architecture for safety-critical systems
 - [Apple FoundationModels](https://developer.apple.com/documentation/FoundationModels) — On-device LLM framework
 
 ## Related Projects
 
-- **Chronicle Quest** — Full narrative RPG using SwiftVector (private, coming soon)
-- **Flightworks GCS** — Drone ground control system with safety-critical AI (public, coming soon)
+- **ChronicleLaw** — Narrative coherence governance using AgentVector through SwiftVector (coming soon)
+- **FlightLaw** — Autonomous drone governance using AgentVector through SwiftVector (coming soon)
 
 ## License
 
@@ -201,4 +201,4 @@ MIT
 
 ---
 
-*Built by [Stephen Sweeney](https://agentincommand.ai) as a reference implementation of the SwiftVector pattern.*
+*Built by [Stephen Sweeney](https://agentincommand.ai) as a reference implementation of the AgentVector pattern through the SwiftVector kernel.*

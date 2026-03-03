@@ -399,7 +399,7 @@ I choose discipline.
 
 ## Related Reading
 
-- [SwiftVector Whitepaper](../whitepaper/SwiftVector-Whitepaper.md) - Architectural patterns for deterministic AI
+- [SwiftVector Kernel Specification](../whitepaper/SwiftVector-Whitepaper.md) - Reference kernel architecture for deterministic AI governance
 - [Swift at the Edge](./Swift-at-the-Edge.md) - Why Swift for edge AI
 - [Agent In Command](https://agentincommand.ai) - Project website
 

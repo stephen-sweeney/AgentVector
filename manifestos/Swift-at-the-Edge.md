@@ -320,7 +320,7 @@ Swift offers that foundation today. The edge is where AI becomes real. Let's bui
 
 ## Related Reading
 
-- [SwiftVector Whitepaper](../whitepaper/SwiftVector-Whitepaper.md) - The architectural pattern
+- [SwiftVector Kernel Specification](../whitepaper/SwiftVector-Whitepaper.md) - The reference kernel architecture
 - [The Agency Paradox](./Agency-Paradox.md) - Human command over AI systems
 - [Agent In Command](https://agentincommand.ai) - Project website
 
