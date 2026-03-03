@@ -262,6 +262,8 @@ The Laws are language-agnostic specifications. Enforcement Kernels implement the
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+> **Note:** Domain Laws are shown here to illustrate the complete system architecture. In practice, each Domain Law is an independent package that imports the framework as a dependency. The framework repo contains the layers above the Deployment Boundary.
+
 ### Above the Compilation Boundary: Specification
 
 **The Codex** is the constitutional framework itself—the philosophy, the architecture, the complete system of governance. It defines what Laws are, how they compose, and what principles are non-negotiable. It is the document you are reading.
