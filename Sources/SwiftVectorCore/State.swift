@@ -13,7 +13,7 @@ import CryptoKit
 
 /// A deterministic, hashable snapshot of system state.
 ///
-/// State is the single source of truth in SwiftVector's control loop:
+/// State is the single source of truth in AgentVector's control loop:
 /// ```
 /// State → Agent → Action → Reducer → New State
 /// ```

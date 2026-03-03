@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Text("SwiftVector Narrative Demo")
+                Text("AgentVector Narrative Demo")
                     .font(.title2)
                     .fontWeight(.semibold)
                 

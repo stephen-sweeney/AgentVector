@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Coordinates the SwiftVector control loop: Agent -> Action -> Reducer -> State.
+/// Coordinates the AgentVector control loop: Agent -> Action -> Reducer -> State.
 ///
 /// The Orchestrator is responsible for:
 /// - Maintaining the single source of truth (state)

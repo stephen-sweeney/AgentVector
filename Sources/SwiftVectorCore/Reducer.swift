@@ -91,7 +91,7 @@ public struct ReducerResult<S: State>: Sendable {
 
 /// Pure function that validates and applies actions to state.
 ///
-/// The Reducer is the **deterministic boundary** in SwiftVector's control loop.
+/// The Reducer is the **deterministic boundary** in AgentVector's control loop.
 /// It is the only component allowed to produce new state:
 /// ```
 /// State → Agent → Action → Reducer → New State

@@ -12,7 +12,7 @@ import Foundation
 
 /// An intent to transition state. Actions are proposals, not commands.
 ///
-/// In SwiftVector's control loop, agents propose Actions, but only the Reducer
+/// In AgentVector's control loop, agents propose Actions, but only the Reducer
 /// decides whether to apply them:
 /// ```
 /// State → Agent → Action → Reducer → New State

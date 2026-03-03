@@ -11,7 +11,7 @@ import SwiftVectorCore
 #endif
 
 // MARK: - Agent (Stochastic)
-/// The Agent demonstrates the "stochastic" component of SwiftVector.
+/// The Agent demonstrates the "stochastic" component of AgentVector.
 /// When FoundationModels is available, it uses Apple's on-device LLM.
 /// Otherwise, it falls back to random selection.
 ///

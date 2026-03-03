@@ -9,7 +9,7 @@ import Foundation
 import SwiftVectorCore
 
 // MARK: - Orchestrator (AsyncStream for safe broadcasting)
-/// The Orchestrator implements the SwiftVector control loop:
+/// The Orchestrator implements the AgentVector control loop:
 /// 1. Agent observes immutable state snapshot
 /// 2. Governance Laws evaluate the proposed action (if policy active)
 /// 3. Reducer validates and applies (deterministic—enforces rules)

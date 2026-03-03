@@ -11,7 +11,7 @@ import Foundation
 
 /// A deterministic governance constraint that evaluates proposed actions.
 ///
-/// Laws are the governance layer in SwiftVector's constitutional architecture.
+/// Laws are the governance layer in AgentVector's constitutional architecture.
 /// Each Law evaluates a proposed action against the current state and produces
 /// a `LawVerdict`. Multiple Laws compose through a `CompositionRule` to produce
 /// a final governance decision recorded as a `CompositionTrace`.

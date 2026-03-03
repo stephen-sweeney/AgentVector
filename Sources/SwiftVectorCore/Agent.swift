@@ -9,7 +9,7 @@ import Foundation
 
 /// A stochastic proposer that observes state and suggests actions.
 ///
-/// Agents are the "stochastic" component in SwiftVector's control loop.
+/// Agents are the "stochastic" component in AgentVector's control loop.
 /// They observe immutable state and propose actions, which the Reducer
 /// validates and applies.
 ///
